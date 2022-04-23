@@ -13,10 +13,13 @@
     "author": "Cyan903",
     "license": "ISC",
     "dependencies": {
-        "consola": "^2.15.3"
+        "consola": "^2.15.3",
+        "googleapis": "^100.0.0",
+        "readline-sync": "^1.4.10"
     },
     "devDependencies": {
         "@types/node": "^17.0.21",
+        "@types/readline-sync": "^1.4.4",
         "@typescript-eslint/eslint-plugin": "^5.13.0",
         "@typescript-eslint/parser": "^5.13.0",
         "eslint": "^8.10.0",
