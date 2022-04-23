@@ -1,0 +1,27 @@
+{
+    "name": "soundcloud-yt",
+    "version": "1.0.0",
+    "description": "Automatically upload Soundcloud songs to YouTube for private playlists.",
+    "main": "./dist/bin/cli.js",
+    "scripts": {
+        "build": "tsc",
+        "start": "ts-node ./src/index.ts",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "pretty": "prettier ./src --write"
+    },
+    "author": "Cyan903",
+    "license": "ISC",
+    "dependencies": {
+        "consola": "^2.15.3"
+    },
+    "devDependencies": {
+        "@types/node": "^17.0.21",
+        "@typescript-eslint/eslint-plugin": "^5.13.0",
+        "@typescript-eslint/parser": "^5.13.0",
+        "eslint": "^8.10.0",
+        "prettier": "^2.5.1",
+        "ts-node": "^10.6.0",
+        "typescript": "^4.6.2"
+    }
+}
