@@ -2,10 +2,11 @@
     "name": "soundcloud-yt",
     "version": "1.0.0",
     "description": "Automatically upload Soundcloud songs to YouTube for private playlists.",
-    "main": "./dist/bin/cli.js",
+    "main": "./dist/index.js",
     "scripts": {
         "build": "tsc",
-        "start": "ts-node ./src/index.ts",
+        "start": "node ./dist/index.js",
+        "startDev": "ts-node ./src/index.ts",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
         "pretty": "prettier ./src --write"
