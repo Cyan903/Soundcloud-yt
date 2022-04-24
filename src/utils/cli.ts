@@ -1,9 +1,3 @@
-/*
-soundcloud-yt upload https://soundcloud.com/momonesakai/cant-be-anything
-soundcloud-yt auth
-soundcloud-yt clean
-soundcloud-yt help
-*/
 import { genAuth, loadAuth, upload } from "../api/youtube";
 import { downloadSong } from "../api/soundcloud";
 import { merge } from "./ffmpeg";
@@ -55,4 +49,6 @@ export function clean() {
     }
 }
 
-// export function help() {}
+export function help() {
+    consola.log("help");
+}
