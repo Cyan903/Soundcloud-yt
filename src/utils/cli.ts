@@ -1,7 +1,7 @@
 import { genAuth, loadAuth, upload } from "../api/youtube";
 import { downloadSong } from "../api/soundcloud";
 import { merge } from "./ffmpeg";
-import { unlink } from "fs";
+import { readFileSync, unlink } from "fs";
 import { join } from "path";
 import consola from "consola";
 
@@ -50,5 +50,11 @@ export function clean() {
 }
 
 export function help() {
-    consola.log("help");
+    ["../static/logo.txt", "../static/cmd.txt"].forEach((file) => {
+        process.stdout.write(
+            readFileSync(join(__dirname, file), {
+                encoding: "utf-8",
+            })
+        );
+    });
 }

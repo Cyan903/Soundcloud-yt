@@ -1,0 +1,12 @@
+soundcloud-yt upload https://soundcloud.com/example_artist/example_song
+    - Upload a song to YouTube.
+
+soundcloud-yt auth
+    - Run authorize process.
+
+soundcloud-yt clean
+    - Clean files that haven't been uploaded.
+
+soundcloud-yt help
+    - Prints this reference.
+
