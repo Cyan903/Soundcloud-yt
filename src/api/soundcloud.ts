@@ -1,15 +1,20 @@
 import scdl from "soundcloud-downloader";
 import https from "https";
+import consola from "consola";
 import { Transform } from "stream";
 import { createWriteStream, writeFileSync } from "fs";
 
-export async function downloadSong(url: string, downloadPath: string) {
+export async function downloadSong(url: string, downloadPath: string, callback: () => void) {
     const data = await scdl.getInfo(url);
 
-    downloadImage(data.artwork_url, downloadPath);
-    scdl.download(url).then((stream) =>
-        stream.pipe(createWriteStream(downloadPath + "/audio.mp3"))
-    );
+    await downloadImage(data.artwork_url, downloadPath);
+    scdl.download(url).then((stream) => {
+        stream.pipe(createWriteStream(downloadPath + "/audio.mp3"));
+        stream.on("end", () => {
+            consola.info("[soundcloud] downloaded audio");
+            callback();
+        });
+    });
 
     return {
         url,
@@ -24,11 +29,17 @@ export async function downloadSong(url: string, downloadPath: string) {
 function downloadImage(url: string, downloadPath: string) {
     if (url == "") return;
 
-    // prettier-ignore
-    https.request(url, (res) => {
-        const data = new Transform();
+    return new Promise((resolve) => {
+        // prettier-ignore
+        https.request(url, (res) => {
+            const data = new Transform();
 
-        res.on("data", (chunk) => data.push(chunk));
-        res.on("end", () => writeFileSync(downloadPath + "/thumb.jpg", data.read()));
-    }).end();
+            res.on("data", (chunk) => data.push(chunk));
+            res.on("end", () => {
+                writeFileSync(downloadPath + "/thumb.jpg", data.read());
+                consola.info("[soundcloud] downloaded image");
+                resolve(null);
+            });
+        }).end();
+    })
 }

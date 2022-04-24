@@ -33,12 +33,10 @@ export function genAuth(authPath: string, secretPath: string) {
 
     // Start webserver for Google API
     // prettier-ignore
-    spawn("node", ["./dist/api/server.js", secret.installed.redirect_uris[0]],
-        {
-            stdio: ["ignore"],
-            detached: true,
-        }
-    ).unref();
+    spawn("node", ["./dist/api/server.js", secret.installed.redirect_uris[0]], {
+        stdio: ["ignore"],
+        detached: true,
+    }).unref();
 
     // Prompt
     consola.info("Visit this website. After logging in, paste the code here.");
@@ -77,6 +75,7 @@ export function loadAuth(authPath: string, secretPath: string) {
         })
     );
 
+    consola.info("[youtube] loaded auth")
     return client;
 }
 
@@ -114,12 +113,12 @@ export function upload(auth: any, video: Video) {
         },
         (err: Error, response: resData) => {
             if (err) {
-                consola.error("The API returned an error: " + err);
+                consola.error("API Error:", err);
                 return;
             }
-            consola.info(response.data);
 
-            consola.info("Video uploaded. Uploading the thumbnail now.");
+            consola.info("[youtube] uploaded video, doing thumbnail...");
+
             service.thumbnails.set(
                 {
                     auth: auth,
@@ -130,7 +129,7 @@ export function upload(auth: any, video: Video) {
                 },
                 (err: Error, response: resData) => {
                     if (err) {
-                        consola.error("The API returned an error: " + err);
+                        consola.error("API Error:", err);
                         return;
                     }
                     consola.info(response.data);

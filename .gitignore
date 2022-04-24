@@ -13,4 +13,5 @@ TODO
 # don't include
 /config/*.json
 /res/*.mp3
+/res/*.mkv
 /res/*.jpg
