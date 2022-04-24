@@ -4,8 +4,9 @@ package-lock.json
 pnpm-lock.yaml
 
 # ts
-/tmp
 /dist
 
 # misc
 TODO
+/config/*.json
+/tmp
