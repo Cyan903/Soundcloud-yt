@@ -8,5 +8,9 @@ pnpm-lock.yaml
 
 # misc
 TODO
-/config/*.json
 /tmp
+
+# don't include
+/config/*.json
+/res/*.mp3
+/res/*.jpg

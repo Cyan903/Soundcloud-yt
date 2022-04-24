@@ -15,7 +15,8 @@
     "dependencies": {
         "consola": "^2.15.3",
         "googleapis": "^100.0.0",
-        "readline-sync": "^1.4.10"
+        "readline-sync": "^1.4.10",
+        "soundcloud-downloader": "^1.0.0"
     },
     "devDependencies": {
         "@types/node": "^17.0.21",
