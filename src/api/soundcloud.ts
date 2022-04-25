@@ -4,7 +4,15 @@ import consola from "consola";
 import { Transform } from "stream";
 import { createWriteStream, writeFileSync } from "fs";
 
-export async function downloadSong(url: string, downloadPath: string, callback: () => void) {
+type songRes = {
+    artist: string,
+    link: string,
+    title: string,
+    description: string ,
+    release: string ,
+}
+
+export async function downloadSong(url: string, downloadPath: string, callback: (o: songRes) => void) {
     const data = await scdl.getInfo(url);
 
     await downloadImage(data.artwork_url, downloadPath);
@@ -12,18 +20,15 @@ export async function downloadSong(url: string, downloadPath: string, callback: 
         stream.pipe(createWriteStream(downloadPath + "/audio.mp3"));
         stream.on("end", () => {
             consola.info("[soundcloud] downloaded audio");
-            callback();
+            callback({
+                artist: data.user.username,
+                link: data.user.permalink_url,
+                title: data.title,
+                description: data.description,
+                release: data.created_at,
+            });
         });
     });
-
-    return {
-        url,
-        artist: data.user.username,
-        link: data.user.permalink_url,
-        title: data.title,
-        description: data.description,
-        release: data.created_at,
-    }
 }
 
 function downloadImage(url: string, downloadPath: string) {

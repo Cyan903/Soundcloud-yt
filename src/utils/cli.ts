@@ -7,7 +7,9 @@ import consola from "consola";
 
 export async function uploadVideo(url: string) {
     const auth = loadAuth("./config/auth.json", "./config/secret.json");
-    const data = await downloadSong(url, "./res", async () => {
+    
+    await downloadSong(url, "./res", async (data) => {
+        consola.info("[upload] metadata:", data);
         await merge(
             join(__dirname, "../../res/thumb.jpg"),
             join(__dirname, "../../res/audio.mp3"),
@@ -15,7 +17,7 @@ export async function uploadVideo(url: string) {
         );
 
         upload(auth, {
-            title: `[soundcloud-yt] ${data.artist} - ${data.title}`,
+            title: `[soundcloud-yt] ${data.artist} - ${data.title}`.replace(/(.{70})..+/, "$1…"),
             description: `Uploaded with soundcloud-yt.\nReleased in ${data.release}\n\n${data.description}`,
             tags: [],
             thumb: join(__dirname, "../../res/thumb.jpg"),
