@@ -32,7 +32,14 @@ export async function downloadSong(url: string, downloadPath: string, callback: 
 }
 
 function downloadImage(url: string, downloadPath: string) {
-    if (url == "") return;
+    if (!url) {
+        consola.warn(`[soundcloud] artwork returned ${url}, using default...`);
+        url = "https://raw.githubusercontent.com/Cyan903/Static-github/main/Soundcloud-yt/no-thumb.jpg";
+    }
+
+    // Higher quality imge (that the API doesn't return)
+    // I have yet to find a song which doesn't have this size.
+    url = url.replace("-large.jpg", "-t500x500.jpg");
 
     return new Promise((resolve) => {
         // prettier-ignore
