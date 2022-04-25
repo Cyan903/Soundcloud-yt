@@ -1,14 +1,10 @@
 import { Secrets, OAuth, Video } from "../types/auth";
-import { VideoResponse } from "../types/res";
+import { AuthClient, VideoService, resData } from "../types/youtube";
 import { writeFileSync, createReadStream, readFileSync } from "fs";
 import { google } from "googleapis";
 import { spawn } from "child_process";
 import readlineSync from "readline-sync";
 import consola from "consola";
-
-type resData = {
-    data: VideoResponse;
-};
 
 const OAuth2 = google.auth.OAuth2;
 const API_SCOPE = ["https://www.googleapis.com/auth/youtube.upload"];
@@ -20,11 +16,11 @@ const CATEGORY = {
 
 export function genAuth(authPath: string, secretPath: string) {
     const secret = loadSecret(secretPath);
-    const client: any = new OAuth2(
+    const client = new OAuth2(
         secret.installed.client_id,
         secret.installed.client_secret,
         secret.installed.redirect_uris[0]
-    );
+    ) as AuthClient;
 
     const url = client.generateAuthUrl({
         access_type: "offline",
@@ -63,11 +59,11 @@ export function genAuth(authPath: string, secretPath: string) {
 
 export function loadAuth(authPath: string, secretPath: string) {
     const secret = loadSecret(secretPath);
-    const client: any = new OAuth2(
+    const client = new OAuth2(
         secret.installed.client_id,
         secret.installed.client_secret,
         secret.installed.redirect_uris[0]
-    );
+    ) as AuthClient;
 
     client.credentials = JSON.parse(
         readFileSync(authPath, {
@@ -87,8 +83,8 @@ function loadSecret(path: string): Secrets {
     );
 }
 
-export function upload(auth: any, video: Video) {
-    const service: any = google.youtube("v3");
+export function upload(auth: AuthClient, video: Video) {
+    const service: VideoService = google.youtube("v3");
 
     service.videos.insert(
         {
