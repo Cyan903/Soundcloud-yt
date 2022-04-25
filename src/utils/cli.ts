@@ -1,13 +1,29 @@
 import { genAuth, loadAuth, upload } from "../api/youtube";
 import { downloadSong } from "../api/soundcloud";
 import { merge } from "./ffmpeg";
-import { readFileSync, unlink } from "fs";
+import { unlink } from "fs";
 import { join } from "path";
 import consola from "consola";
 
+// prettier-ignore
+export const help = () => process.stdout.write(
+`soundcloud-yt upload https://soundcloud.com/example_artist/example_song
+    - Upload a song to YouTube.
+
+soundcloud-yt auth
+    - Run authorize process.
+
+soundcloud-yt clean
+    - Clean files that haven't been uploaded.
+
+soundcloud-yt help
+    - Prints this reference.
+
+`);
+
 export async function uploadVideo(url: string) {
     const auth = loadAuth("./config/auth.json", "./config/secret.json");
-    
+
     await downloadSong(url, "./res", async (data) => {
         consola.info("[upload] metadata:", data);
         await merge(
@@ -17,7 +33,10 @@ export async function uploadVideo(url: string) {
         );
 
         upload(auth, {
-            title: `[soundcloud-yt] ${data.artist} - ${data.title}`.replace(/(.{70})..+/, "$1…"),
+            title: `[soundcloud-yt] ${data.artist} - ${data.title}`.replace(
+                /(.{70})..+/,
+                "$1…"
+            ),
             description: `Uploaded with soundcloud-yt.\nReleased in ${data.release}\n\n${data.description}`,
             tags: [],
             thumb: join(__dirname, "../../res/thumb.jpg"),
@@ -49,14 +68,4 @@ export function clean() {
             }
         });
     }
-}
-
-export function help() {
-    ["../static/logo.txt", "../static/cmd.txt"].forEach((file) => {
-        process.stdout.write(
-            readFileSync(join(__dirname, file), {
-                encoding: "utf-8",
-            })
-        );
-    });
 }
